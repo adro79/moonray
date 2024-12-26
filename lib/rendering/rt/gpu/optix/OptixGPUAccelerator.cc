@@ -883,6 +883,7 @@ OptixGPUAccelerator::OptixGPUAccelerator(bool allowUnsupportedFeatures,
 
     // All modules in a pipeline need to use the same values for the pipeline compile options.
     OptixPipelineCompileOptions pipelineCompileOptions = {};
+    OptixPipelineLinkOptions pipelineLinkOptions = {};
     pipelineCompileOptions.usesMotionBlur = true;
     pipelineCompileOptions.traversableGraphFlags = OPTIX_TRAVERSABLE_GRAPH_FLAG_ALLOW_ANY;
     pipelineCompileOptions.numPayloadValues = 2;
@@ -929,8 +930,7 @@ OptixGPUAccelerator::OptixGPUAccelerator(bool allowUnsupportedFeatures,
     for (int i = 0; i < mNumCPUThreads; i++) {
         if (!createOptixPipeline(mContext,
                                 pipelineCompileOptions,
-                                { 1, // maxTraceDepth
-                                OPTIX_COMPILE_DEBUG_LEVEL_NONE },
+                                pipelineLinkOptions,
                                 mProgramGroups,
                                 &(mPipeline[i]),
                                 errorMsg)) {
